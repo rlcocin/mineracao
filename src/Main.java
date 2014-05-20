@@ -17,17 +17,17 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		String indexLocation = "C:/Users/Rafael/workspace_Mineracao/MineracaoDemo/index";
+		String indexLocation = "C:/Users/Rafael/git/Mineração/mineracao/index";
 
 		IndexText indexer = null;
 		try {
 			indexer = new IndexText(indexLocation);
 
-			indexer.indexFileOrDirectory("C:/Users/Rafael/workspace_Mineracao/MineracaoDemo/file");
+			indexer.indexFileOrDirectory("C:/Users/Rafael/git/Mineração/mineracao/file");
 
 			indexer.closeIndex();
 		} catch (Exception ex) {
-			System.out.println("Cannot create index..." + ex.getMessage());
+			System.out.println("Não foi possível criar o indexador..." + ex.getMessage());
 			System.exit(-1);
 		}
 
@@ -39,26 +39,25 @@ public class Main {
 				IndexReader reader = DirectoryReader.open(FSDirectory
 						.open(new File(indexLocation)));
 				IndexSearcher searcher = new IndexSearcher(reader);
-				TopScoreDocCollector collector = TopScoreDocCollector.create(29,
+				TopScoreDocCollector collector = TopScoreDocCollector.create(5,
 						true);
 				
 				
 
-				System.out.println("Enter the search query (q=quit):");
+				System.out.println("Digite a consulta:");
 				s = br.readLine();
 				if (s.equalsIgnoreCase("q")) {
 					break;
 				}
 				Query q = new QueryParser(Version.LUCENE_40, "contents",
-						indexer.getAnalyzer()).parse(s);
+						indexer.getBrazilianAnalyzer()).parse(s);
 				searcher.search(q, collector);
 				ScoreDoc[] hits = collector.topDocs().scoreDocs;
 				
 				int totalhits = collector.getTotalHits();
 						
 
-				// 4. display results
-				System.out.println("Found " + hits.length + " hits.");
+				System.out.println(hits.length + " resultados encontrados.");
 				for (int i = 0; i < hits.length; ++i) {
 					int docId = hits[i].doc;
 					Document d = searcher.doc(docId);
