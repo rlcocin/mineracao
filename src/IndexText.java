@@ -31,9 +31,10 @@ public class IndexText {
 	// Com steamming e stoplist
 	private static BrazilianAnalyzer analyzer = new BrazilianAnalyzer(
 			Version.LUCENE_40,vazio);
-
 	
-
+	private static StandardAnalyzer analyzer2 = new StandardAnalyzer(
+			Version.LUCENE_40, BrazilianAnalyzer.getDefaultStopSet());
+	
 	private IndexWriter writer;
 	private ArrayList<File> queue = new ArrayList<File>();
 
@@ -45,12 +46,14 @@ public class IndexText {
 
 		writer = new IndexWriter(dir, config);
 	}
-	
+
 	public static BrazilianAnalyzer getBrazilianAnalyzer() {
 		return analyzer;
 	}
-	
-	
+
+	public static StandardAnalyzer getAnalyzer() {
+		return analyzer2;
+	}
 
 	public void indexFileOrDirectory(String fileName) throws IOException {
 		addFiles(new File(fileName));
@@ -94,7 +97,7 @@ public class IndexText {
 			}
 		} else {
 			String filename = file.getName().toLowerCase();
-			
+
 			if (filename.endsWith(".txt")) {
 				queue.add(file);
 			} else {
@@ -102,7 +105,6 @@ public class IndexText {
 			}
 		}
 	}
-
 
 	public void closeIndex() throws IOException {
 		writer.close();

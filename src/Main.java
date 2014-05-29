@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.apache.lucene.document.Document;
@@ -17,32 +18,45 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		String indexLocation = "C:/Users/Rafael/git/Mineração/mineracao/index";
-
+		String indexLocation = "H:/git/index";
 		IndexText indexer = null;
-		try {
-			indexer = new IndexText(indexLocation);
+		String docsLocation = "H:/git/doc";
 
-			indexer.indexFileOrDirectory("C:/Users/Rafael/git/Mineração/mineracao/file");
-
-			indexer.closeIndex();
-		} catch (Exception ex) {
-			System.out.println("Não foi possível criar o indexador..." + ex.getMessage());
-			System.exit(-1);
-		}
+		System.out.println("Deseja indexar os arquivos da pasta "
+				+ docsLocation);
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String s;
+		s = "";
+		try {
+			s = br.readLine();
+		} catch (IOException e1) {
+
+		}
+		if (s.equalsIgnoreCase("Y")) {
+
+			try {
+
+				indexer = new IndexText(indexLocation);
+
+				indexer.indexFileOrDirectory(docsLocation);
+
+				indexer.closeIndex();
+			} catch (Exception ex) {
+				System.out.println("Não foi possível criar o indexador..."
+						+ ex.getMessage());
+				System.exit(-1);
+			}
+		}
+
 		s = "";
 		while (!s.equalsIgnoreCase("q")) {
 			try {
 				IndexReader reader = DirectoryReader.open(FSDirectory
 						.open(new File(indexLocation)));
 				IndexSearcher searcher = new IndexSearcher(reader);
-				TopScoreDocCollector collector = TopScoreDocCollector.create(5,
+				TopScoreDocCollector collector = TopScoreDocCollector.create(10,
 						true);
-				
-				
 
 				System.out.println("Digite a consulta:");
 				s = br.readLine();
@@ -50,12 +64,11 @@ public class Main {
 					break;
 				}
 				Query q = new QueryParser(Version.LUCENE_40, "contents",
-						indexer.getBrazilianAnalyzer()).parse(s);
+						indexer.getAnalyzer()).parse(s);
 				searcher.search(q, collector);
 				ScoreDoc[] hits = collector.topDocs().scoreDocs;
-				
+
 				int totalhits = collector.getTotalHits();
-						
 
 				System.out.println(hits.length + " resultados encontrados.");
 				for (int i = 0; i < hits.length; ++i) {
@@ -64,8 +77,7 @@ public class Main {
 					System.out.println((i + 1) + ". " + d.get("path")
 							+ " score=" + hits[i].score);
 				}
-				
-				
+
 				System.out.println("TotalHits: " + totalhits);
 
 			} catch (Exception e) {
