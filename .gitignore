@@ -1,2 +1,4 @@
 bin/
 .settings/
+/nbproject/private/
+/build/
