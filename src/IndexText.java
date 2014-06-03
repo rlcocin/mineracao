@@ -30,7 +30,7 @@ public class IndexText {
 
 	// Com steamming e stoplist
 	private static BrazilianAnalyzer analyzer = new BrazilianAnalyzer(
-			Version.LUCENE_40,vazio);
+			Version.LUCENE_40);
 	
 	private static StandardAnalyzer analyzer2 = new StandardAnalyzer(
 			Version.LUCENE_40, BrazilianAnalyzer.getDefaultStopSet());

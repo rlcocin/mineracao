@@ -18,9 +18,9 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		String indexLocation = "H:/git/index";
+		String indexLocation = "C:/Users/Luiz/Workspace/mineracao/index";
 		IndexText indexer = null;
-		String docsLocation = "H:/git/doc";
+		String docsLocation = "C:/Users/Luiz/Workspace/mineracao/file";
 
 		System.out.println("Deseja indexar os arquivos da pasta "
 				+ docsLocation);
@@ -64,7 +64,7 @@ public class Main {
 					break;
 				}
 				Query q = new QueryParser(Version.LUCENE_40, "contents",
-						indexer.getAnalyzer()).parse(s);
+						indexer.getBrazilianAnalyzer()).parse(s);
 				searcher.search(q, collector);
 				ScoreDoc[] hits = collector.topDocs().scoreDocs;
 
@@ -78,7 +78,7 @@ public class Main {
 							+ " score=" + hits[i].score);
 				}
 
-				System.out.println("TotalHits: " + totalhits);
+				//System.out.println("TotalHits: " + totalhits);
 
 			} catch (Exception e) {
 				System.out.println("Error searching " + s + " : "
