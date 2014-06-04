@@ -33,9 +33,9 @@ public class Menu extends javax.swing.JPanel {
      */
     private IndexText indexer;
 
-    String indexLocation = "C:/Users/Luiz/Workspace/mineracao/index";
+    String indexLocation = "C:/Users/tpls/mineracao/mineracao/index";
 
-    String docsLocation = "C:/Users/Luiz/Workspace/mineracao/file";
+    String docsLocation = "C:/Users/tpls/mineracao/mineracao/file";
 
     public Menu() {
         index();
@@ -61,8 +61,9 @@ public class Menu extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jLabel3 = new javax.swing.JLabel();
 
-        jLabel1.setText("Digite aqui a sua busca:");
+        jLabel1.setText("Digite aqui sua busca:");
 
         campoBusca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,11 +78,14 @@ public class Menu extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setText("Resultado da busca:");
+        jLabel2.setText("Resultados da busca:");
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\tpls\\Pictures\\marra.png")); // NOI18N
+        jLabel3.setText("jLabel3");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -91,19 +95,26 @@ public class Menu extends javax.swing.JPanel {
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(campoBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(campoBusca))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(114, 114, 114)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton1))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(campoBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -162,16 +173,17 @@ public class Menu extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 
     private void index() {
-        String indexLocation = "C:/Users/Luiz/Workspace/mineracao/index";
+        String indexLocation = "C:/Users/tpls/mineracao/mineracao/index";
 
         indexer = null;
 
-        String docsLocation = "C:/Users/Luiz/Workspace/mineracao/file";
+        String docsLocation = "C:/Users/tpls/mineracao/mineracao/file";
 
         try {
 
@@ -181,7 +193,7 @@ public class Menu extends javax.swing.JPanel {
 
             indexer.closeIndex();
         } catch (Exception ex) {
-            System.out.println("N�o foi poss�vel criar o indexador..."
+            System.out.println("Nao foi possivel criar o indexador..."
                     + ex.getMessage());
             System.exit(-1);
         }
