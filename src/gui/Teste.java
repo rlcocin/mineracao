@@ -10,6 +10,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -35,7 +38,7 @@ public class Teste extends javax.swing.JFrame {
 
 	private IndexText indexer;
 
-	String indexLocation = "index";
+	String indexLocation = "index4";
 
 	String docsLocation = "file";
 
@@ -98,22 +101,22 @@ public class Teste extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(135, 135, 135)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(29, 29, 29)
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(campoBusca)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton1))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(campoBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(236, 236, 236)
+                                .addComponent(jLabel2)
+                                .addGap(239, 239, 239)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(249, 249, 249))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,11 +128,11 @@ public class Teste extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(campoBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
@@ -146,11 +149,11 @@ public class Teste extends javax.swing.JFrame {
 					.open(new File(indexLocation)));
 
 			IndexSearcher searcher = new IndexSearcher(reader);
-			TopScoreDocCollector collector = TopScoreDocCollector.create(101,
-					true);
+			TopScoreDocCollector collector = TopScoreDocCollector.create(10,
+					 true);
 
 			Query q = new QueryParser(Version.LUCENE_40, "contents",
-					indexer.getBrazilianAnalyzer()).parse(campoBusca.getText());
+					indexer.getAnalyzer()).parse(campoBusca.getText());
 			searcher.search(q, collector);
 			ScoreDoc[] hits = collector.topDocs().scoreDocs;
 
@@ -222,8 +225,8 @@ public class Teste extends javax.swing.JFrame {
 
 	private void index() {
 
-		String indexLocation = "index";
 		
+
 		if (!new File(indexLocation).exists()){
 			indexer = null;
 
@@ -236,12 +239,37 @@ public class Teste extends javax.swing.JFrame {
 				indexer.indexFileOrDirectory(docsLocation);
 
 				indexer.closeIndex();
+
+				JOptionPane.showMessageDialog(null, "Indexacao feita com sucesso!",
+						"MarraSearch - Mensagem", 1);
+
 			} catch (Exception ex) {
 				System.out.println("Nao foi possivel criar o indexador..."
 						+ ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Nao foi possivel criar o indexador!",
+						"MarraSearch - Mensagem", 1);
 				System.exit(-1);
 			}
 		}
+	}
+
+	private void reindexar() {
+		this.deletarDiretorio(new File("index"));
+		this.index();
+	}
+
+	private void deletarDiretorio(File dir) {
+		File[] arqs = dir.listFiles();
+		if(arqs!=null) {
+			for(File f: arqs) {
+				if(f.isDirectory()) {
+					deletarDiretorio(f);
+				} else {
+					f.delete();
+				}
+			}
+		}
+		dir.delete();
 	}
 
 }
