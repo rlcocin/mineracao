@@ -35,7 +35,7 @@ public class IndexText {
 			Version.LUCENE_40);
 	
 	private static StandardAnalyzer analyzer2 = new StandardAnalyzer(
-			Version.LUCENE_40,vazio);
+			Version.LUCENE_40);
 	
 	private IndexWriter writer;
 	private ArrayList<File> queue = new ArrayList<File>();
@@ -44,7 +44,7 @@ public class IndexText {
 		FSDirectory dir = FSDirectory.open(new File(indexDir));
 
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_40,
-				analyzer2);
+				analyzer);
 
 		writer = new IndexWriter(dir, config);
 	}

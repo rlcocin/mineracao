@@ -38,8 +38,10 @@ public class Teste extends javax.swing.JFrame {
 
 	private IndexText indexer;
 
-	String indexLocation = "index4";
+	String[] indexLocations = {"index_stemming", "index_stopwords", "index_stemming_stopwerds", "index_naked"};
 
+	int index_type = -1;
+	
 	String docsLocation = "file";
 
 	public Teste() {
@@ -65,6 +67,11 @@ public class Teste extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jSeparator1 = new javax.swing.JSeparator();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,8 +96,26 @@ public class Teste extends javax.swing.JFrame {
 
         jLabel2.setText("Resultados da busca:");
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\tpls\\Pictures\\marra.png")); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/marra.png"))); // NOI18N
         jLabel3.setText("jLabel3");
+
+        jButton2.setText("Reindexar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jCheckBox1.setLabel("Habilitar Stopwords");
+
+        jCheckBox2.setLabel("Habilitar Stemming");
+        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Sair");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -98,24 +123,39 @@ public class Teste extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(235, 235, 235))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(135, 135, 135)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(campoBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(236, 236, 236)
-                                .addComponent(jLabel2)
-                                .addGap(239, 239, 239)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(135, 135, 135)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jCheckBox1)
+                                        .addGap(85, 85, 85)
+                                        .addComponent(jCheckBox2))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(campoBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton1))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(183, 183, 183)
+                .addComponent(jButton2)
+                .addGap(64, 64, 64)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -128,11 +168,21 @@ public class Teste extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(campoBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBox1)
+                    .addComponent(jCheckBox2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addGap(7, 7, 7))
         );
 
         pack();
@@ -143,17 +193,19 @@ public class Teste extends javax.swing.JFrame {
 	}//GEN-LAST:event_campoBuscaActionPerformed
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-		IndexReader reader;
+		
+            index_type = (jCheckBox1.isSelected() ? (jCheckBox2.isSelected() ? 3 : 1) : (jCheckBox2.isSelected() ? 2 : 0));
+            IndexReader reader;
 		try {
 			reader = DirectoryReader.open(FSDirectory
-					.open(new File(indexLocation)));
+					.open(new File(indexLocations[index_type])));
 
 			IndexSearcher searcher = new IndexSearcher(reader);
-			TopScoreDocCollector collector = TopScoreDocCollector.create(10,
-					 true);
+			TopScoreDocCollector collector = TopScoreDocCollector.create(100,
+					true);
 
-			Query q = new QueryParser(Version.LUCENE_40, "contents",
-					indexer.getAnalyzer()).parse(campoBusca.getText());
+			Query q = new QueryParser(Version.LUCENE_40, "contents",indexer.getBrazilianAnalyzer()).parse(campoBusca.getText());
+			System.out.println(q.toString());
 			searcher.search(q, collector);
 			ScoreDoc[] hits = collector.topDocs().scoreDocs;
 
@@ -171,12 +223,23 @@ public class Teste extends javax.swing.JFrame {
 
 			}
 
+			reader.close();
+
 		} catch (IOException ex) {
 			Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
 		} catch (ParseException ex) {
 			Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}//GEN-LAST:event_jButton1ActionPerformed
+
+	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+		// TODO add your handling code here:
+		this.reindexar();
+	}//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox2ActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -216,41 +279,45 @@ public class Teste extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField campoBusca;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 
 	private void index() {
 
-		
+		new File(indexLocations[index_type]).mkdir();
 
-		if (!new File(indexLocation).exists()){
-			indexer = null;
+		indexer = null;
 
-			String docsLocation = "file";
+		String docsLocation = "file";
 
-			try {
+		try {
 
-				indexer = new IndexText(indexLocation);
+			indexer = new IndexText(indexLocations[index_type]);
 
-				indexer.indexFileOrDirectory(docsLocation);
+			indexer.indexFileOrDirectory(docsLocation);
 
-				indexer.closeIndex();
+			indexer.closeIndex();
 
-				JOptionPane.showMessageDialog(null, "Indexacao feita com sucesso!",
-						"MarraSearch - Mensagem", 1);
+			JOptionPane.showMessageDialog(null, "Indexacao feita com sucesso!",
+					"MarraSearch - Mensagem", 1);
 
-			} catch (Exception ex) {
-				System.out.println("Nao foi possivel criar o indexador..."
-						+ ex.getMessage());
-				JOptionPane.showMessageDialog(null, "Nao foi possivel criar o indexador!",
-						"MarraSearch - Mensagem", 1);
-				System.exit(-1);
-			}
+		} catch (Exception ex) {
+			System.out.println("Nao foi possivel criar o indexador..."
+					+ ex.getMessage());
+			JOptionPane.showMessageDialog(null, "Nao foi possivel criar o indexador!",
+					"MarraSearch - Mensagem", 1);
+			System.exit(-1);
 		}
+
 	}
 
 	private void reindexar() {
@@ -269,7 +336,7 @@ public class Teste extends javax.swing.JFrame {
 				}
 			}
 		}
-		dir.delete();
+		//dir.delete();
 	}
 
 }
