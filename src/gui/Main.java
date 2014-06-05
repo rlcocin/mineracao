@@ -39,7 +39,7 @@ public class Main {
 
             try {
 
-                indexer = new IndexText(indexLocation);
+                indexer = new IndexText(indexLocation, 0);
 
                 indexer.indexFileOrDirectory(docsLocation);
                 

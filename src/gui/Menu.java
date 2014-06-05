@@ -187,7 +187,7 @@ public class Menu extends javax.swing.JPanel {
 
         try {
 
-            indexer = new IndexText(indexLocation);
+            indexer = new IndexText(indexLocation, 0);
 
             indexer.indexFileOrDirectory(docsLocation);
 

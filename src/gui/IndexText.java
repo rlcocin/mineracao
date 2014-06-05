@@ -26,35 +26,31 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class IndexText {
-
-	// Usado para retirar o stoplist
-	static CharArraySet vazio = new CharArraySet(Version.LUCENE_40, 0, false);
-
-	// Com steamming e stoplist
-	private static BrazilianAnalyzer analyzer = new BrazilianAnalyzer(
-			Version.LUCENE_40);
-	
-	private static StandardAnalyzer analyzer2 = new StandardAnalyzer(
-			Version.LUCENE_40);
 	
 	private IndexWriter writer;
 	private ArrayList<File> queue = new ArrayList<File>();
 
-	public IndexText(String indexDir) throws IOException {
-		FSDirectory dir = FSDirectory.open(new File(indexDir));
+	public IndexText(IndexEnum indexDir) throws IOException {
+		FSDirectory dir = FSDirectory.open(new File(indexDir.name()));
 
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_40,
-				analyzer);
+				indexDir.getValor());
 
+		if (indexDir.name().equals("STOPWORDS_STEMMING_INDEX")) {
+			config = new IndexWriterConfig(Version.LUCENE_40,
+					Analyzers.getAnalyzerCompleto());	
+		} else if (indexDir.name().equals("STOPWORDS_INDEX")) {
+			config = new IndexWriterConfig(Version.LUCENE_40,
+					Analyzers.getAnalyzerStopwords());
+		} else if (indexDir.name().equals("STEMMING_INDEX")) {
+			config = new IndexWriterConfig(Version.LUCENE_40,
+					Analyzers.getAnalyzerStemming());
+		} else {
+			config = new IndexWriterConfig(Version.LUCENE_40,
+					Analyzers.getAnalyzer());
+		}
+		
 		writer = new IndexWriter(dir, config);
-	}
-
-	public static BrazilianAnalyzer getBrazilianAnalyzer() {
-		return analyzer;
-	}
-
-	public static StandardAnalyzer getAnalyzer() {
-		return analyzer2;
 	}
 
 	public void indexFileOrDirectory(String fileName) throws IOException {
